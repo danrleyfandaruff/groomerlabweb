@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GroomerPet360 — Do caos ao pet shop lucrativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0c0f;
+      --bg2:      #0f1318;
+      --bg3:      #151b22;
+      --card:     #1a2230;
+      --border:   #232d3a;
+      --green:    #00d97e;
+      --green2:   #00b566;
+      --gold:     #f5c842;
+      --gold2:    #d4a917;
+      --text:     #e8edf3;
+      --muted:    #7a8fa8;
+      --accent:   #3b82f6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,12,15,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .nav-logo {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--green), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .9rem; font-weight: 500;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta {
+      background: var(--green); color: #000;
+      padding: .5rem 1.25rem; border-radius: 8px;
+      font-weight: 700; font-size: .88rem;
+      text-decoration: none; transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--green2); }
+
+    /* ─── HERO ────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      padding: 120px 5% 80px;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 40%, rgba(0,217,126,.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(245,200,66,.05) 0%, transparent 60%);
+    }
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(0,217,126,.12); border: 1px solid rgba(0,217,126,.3);
+      color: var(--green); padding: .35rem .9rem; border-radius: 999px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -2px; margin-bottom: 1.4rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--muted); max-width: 480px;
+      margin-bottom: 2.2rem; line-height: 1.75;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #000; padding: .85rem 2rem; border-radius: 10px;
+      font-weight: 800; font-size: 1rem; text-decoration: none;
+      display: inline-flex; align-items: center; gap: .5rem;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 0 24px rgba(0,217,126,.25);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(0,217,126,.4); }
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text); padding: .85rem 1.8rem; border-radius: 10px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+    /* Hero visual card */
+    .hero-visual {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      position: relative;
+    }
+    .hero-visual::after {
+      content: '';
+      position: absolute; inset: -1px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(0,217,126,.2), rgba(245,200,66,.1), transparent);
+      z-index: -1;
+    }
+    .stat-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 1rem; margin-bottom: 1.5rem;
+    }
+    .stat-card {
+      background: var(--bg3); border-radius: 12px;
+      padding: 1.2rem; border: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.7rem; font-weight: 900; letter-spacing: -1px;
+      color: var(--green); line-height: 1;
+      margin-bottom: .25rem;
+    }
+    .stat-label { font-size: .75rem; color: var(--muted); font-weight: 500; }
+    .metric-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--bg3); border-radius: 10px;
+      padding: .9rem 1rem; border: 1px solid var(--border);
+      margin-bottom: .6rem;
+    }
+    .metric-row:last-child { margin-bottom: 0; }
+    .metric-label { font-size: .85rem; color: var(--muted); }
+    .metric-val { font-weight: 700; font-size: .95rem; color: var(--gold); }
+    .metric-bar-wrap { width: 100%; height: 4px; background: var(--border); border-radius: 99px; margin-top: .4rem; }
+    .metric-bar { height: 4px; border-radius: 99px; background: linear-gradient(90deg, var(--green), var(--gold)); }
+
+    /* ─── SECTION COMMON ──────────────────────── */
+    section { padding: 90px 5%; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block;
+      background: rgba(0,217,126,.1); border: 1px solid rgba(0,217,126,.25);
+      color: var(--green); padding: .3rem .8rem; border-radius: 6px;
+      font-size: .75rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -1.5px; margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 620px; line-height: 1.75;
+    }
+    .section-header { margin-bottom: 3.5rem; }
+    .section-header.center { text-align: center; }
+    .section-header.center .section-sub { margin: 0 auto; }
+    .section-header.center .section-tag { display: block; }
+
+    /* ─── PÚBLICO ─────────────────────────────── */
+    .publico { background: var(--bg2); }
+    .publico-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    .pub-card {
+      border-radius: 20px; padding: 2.4rem 2rem;
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .pub-card:hover { transform: translateY(-4px); }
+    .pub-card::after {
+      content: '';
+      position: absolute; inset: 0; border-radius: 20px;
+      pointer-events: none;
+    }
+    .pub-abrir {
+      background: linear-gradient(160deg, rgba(0,217,126,.07) 0%, var(--card) 60%);
+      border-color: rgba(0,217,126,.3);
+    }
+    .pub-abrir:hover { box-shadow: 0 0 40px rgba(0,217,126,.12); }
+    .pub-tem {
+      background: linear-gradient(160deg, rgba(245,200,66,.07) 0%, var(--card) 60%);
+      border-color: rgba(245,200,66,.3);
+    }
+    .pub-tem:hover { box-shadow: 0 0 40px rgba(245,200,66,.12); }
+
+    .pub-eyebrow {
+      font-size: .72rem; font-weight: 800; letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: .6rem;
+      display: inline-flex; align-items: center; gap: .4rem;
+    }
+    .pub-abrir .pub-eyebrow { color: var(--green); }
+    .pub-tem .pub-eyebrow { color: var(--gold); }
+
+    .pub-card h3 {
+      font-size: 1.35rem; font-weight: 900;
+      letter-spacing: -.5px; line-height: 1.2; margin-bottom: .8rem;
+    }
+    .pub-card > p {
+      font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem;
+    }
+    .pub-dores { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.8rem; }
+    .pub-dores li {
+      display: flex; gap: .7rem; align-items: flex-start;
+      font-size: .85rem; line-height: 1.5;
+    }
+    .pub-dores li .di { flex-shrink: 0; font-size: 1rem; }
+    .pub-link {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .88rem; font-weight: 700; text-decoration: none;
+      padding: .65rem 1.3rem; border-radius: 9px;
+      transition: opacity .2s;
+    }
+    .pub-link:hover { opacity: .82; }
+    .pub-abrir .pub-link { background: rgba(0,217,126,.15); color: var(--green); border: 1px solid rgba(0,217,126,.3); }
+    .pub-tem .pub-link { background: rgba(245,200,66,.12); color: var(--gold); border: 1px solid rgba(245,200,66,.3); }
+    @media (max-width: 700px) { .publico-grid { grid-template-columns: 1fr; } }
+
+    /* ─── DORES ───────────────────────────────── */
+    .pain { background: var(--bg2); }
+    .pain-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+    .pain-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.6rem;
+      border-left: 3px solid var(--gold);
+      transition: transform .2s;
+    }
+    .pain-card:hover { transform: translateY(-3px); }
+    .pain-icon { font-size: 1.8rem; margin-bottom: .75rem; }
+    .pain-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
+    .pain-card p { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── SOLUÇÃO / MÉTODO ────────────────────── */
+    .method-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 1rem; margin-top: 3rem;
+    }
+    .method-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      text-align: center; transition: border-color .2s, transform .2s;
+      position: relative; overflow: hidden;
+    }
+    .method-card:hover { border-color: var(--green); transform: translateY(-3px); }
+    .method-letter {
+      font-family: 'Inter', sans-serif;
+      font-size: 2.2rem; font-weight: 900;
+      background: linear-gradient(135deg, var(--green), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      line-height: 1; margin-bottom: .5rem;
+    }
+    .method-word { font-weight: 700; font-size: .95rem; margin-bottom: .3rem; }
+    .method-desc { font-size: .78rem; color: var(--muted); line-height: 1.5; }
+
+    /* ─── TIME ─────────────────────────────────── */
+    .team { background: var(--bg2); }
+    .team-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+    }
+    .team-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.8rem 1.4rem;
+      text-align: center; transition: transform .2s, border-color .2s;
+    }
+    .team-card:hover { transform: translateY(-4px); border-color: var(--green); }
+    .team-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin: 0 auto 1rem;
+    }
+    .team-role {
+      display: inline-block;
+      background: rgba(0,217,126,.12); color: var(--green);
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; padding: .2rem .6rem; border-radius: 4px;
+      margin-bottom: .75rem;
+    }
+    .team-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: .4rem; }
+    .team-card p { font-size: .83rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── PRODUTOS ─────────────────────────────── */
+    .products-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 1.5rem; align-items: stretch;
+    }
+    .product-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem;
+      position: relative; transition: transform .25s, box-shadow .25s;
+      display: flex; flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,.4); }
+    .product-card.featured {
+      border-color: var(--green);
+      box-shadow: 0 0 0 1px var(--green), 0 0 40px rgba(0,217,126,.12);
+    }
+    .product-badge-top {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(90deg, var(--green), var(--gold));
+      color: #000; font-size: .72rem; font-weight: 800; letter-spacing: .08em;
+      text-transform: uppercase; padding: .3rem 1rem; border-radius: 999px;
+      white-space: nowrap;
+    }
+    .product-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .product-card h3 { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 800; letter-spacing: -.3px; margin-bottom: .5rem; }
+    .product-desc { font-size: .88rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.65; }
+    .product-price {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.9rem; font-weight: 900; letter-spacing: -1px;
+      color: var(--green); line-height: 1;
+      margin-bottom: .25rem;
+    }
+    .product-price span { font-size: .9rem; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; }
+    .product-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+    .product-list { list-style: none; margin-bottom: 1.8rem; flex: 1; }
+    .product-list li {
+      display: flex; gap: .6rem; font-size: .85rem;
+      padding: .35rem 0; border-bottom: 1px solid rgba(35,45,58,.5);
+      align-items: flex-start;
+    }
+    .product-list li:last-child { border-bottom: none; }
+    .product-list li::before { content: '✓'; color: var(--green); font-weight: 800; flex-shrink: 0; }
+    .product-cta {
+      display: block; text-align: center;
+      background: linear-gradient(135deg, var(--green), var(--green2));
+      color: #000; padding: .85rem; border-radius: 10px;
+      font-weight: 800; font-size: .95rem; text-decoration: none;
+      transition: opacity .2s; margin-top: auto;
+    }
+    .product-cta:hover { opacity: .88; }
+    .product-cta.ghost {
+      background: transparent;
+      border: 1px solid var(--green);
+      color: var(--green);
+    }
+    .product-cta.ghost:hover { background: rgba(0,217,126,.08); }
+    .product-cta.gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000;
+    }
+
+    /* ─── APLICATIVO ───────────────────────────── */
+    .app { background: var(--bg2); }
+    .app-inner {
+      display: grid; grid-template-columns: 1fr 1.1fr;
+      gap: 4rem; align-items: center;
+    }
+    .app-features { margin-top: 2rem; display: flex; flex-direction: column; gap: .9rem; }
+    .app-feat {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: var(--card); border: 1px solid var(--border);
+      padding: 1rem 1.2rem; border-radius: 12px;
+      transition: border-color .2s;
+    }
+    .app-feat:hover { border-color: var(--green); }
+    .app-feat-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(0,217,126,.12); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .app-feat-text h4 { font-size: .92rem; font-weight: 700; margin-bottom: .2rem; }
+    .app-feat-text p { font-size: .8rem; color: var(--muted); line-height: 1.5; }
+
+    /* App mock */
+    .app-mockup {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 1.5rem;
+      box-shadow: 0 24px 60px rgba(0,0,0,.4);
+    }
+    .mock-topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.2rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .mock-title { font-weight: 700; font-size: .95rem; }
+    .mock-badge {
+      background: rgba(0,217,126,.15); color: var(--green);
+      font-size: .72rem; font-weight: 700; padding: .25rem .7rem;
+      border-radius: 999px;
+    }
+    .mock-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem .8rem; border-radius: 10px;
+      margin-bottom: .5rem; background: var(--bg3);
+    }
+    .mock-row:last-child { margin-bottom: 0; }
+    .mock-row-left { display: flex; align-items: center; gap: .75rem; }
+    .mock-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .mock-pet { font-size: .88rem; font-weight: 600; }
+    .mock-time { font-size: .75rem; color: var(--muted); }
+    .mock-status {
+      font-size: .72rem; font-weight: 700; padding: .2rem .6rem;
+      border-radius: 999px;
+    }
+    .status-done { background: rgba(0,217,126,.15); color: var(--green); }
+    .status-prog { background: rgba(59,130,246,.15); color: var(--accent); }
+    .status-wait { background: rgba(245,200,66,.12); color: var(--gold); }
+    .mock-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+    .mock-stats { display: flex; gap: .8rem; margin-top: 1rem; }
+    .mock-stat {
+      flex: 1; background: var(--bg3); border-radius: 10px;
+      padding: .8rem; text-align: center;
+    }
+    .mock-stat-num { font-weight: 800; font-size: 1.2rem; color: var(--green); line-height: 1; }
+    .mock-stat-lbl { font-size: .68rem; color: var(--muted); margin-top: .2rem; }
+
+    /* ─── COPY SECTION (Por que) ─────────────── */
+    .why { background: var(--bg); }
+    .why-inner {
+      max-width: 760px; margin: 0 auto; text-align: center;
+    }
+    .why-text {
+      font-size: 1.15rem; color: var(--muted); line-height: 2;
+      margin-bottom: 2rem;
+    }
+    .why-text strong { color: var(--text); }
+    .highlight-list {
+      display: flex; flex-direction: column; gap: .75rem;
+      text-align: left; max-width: 560px; margin: 0 auto 2.5rem;
+    }
+    .highlight-item {
+      display: flex; align-items: center; gap: .8rem;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: .9rem 1.2rem;
+      font-size: .95rem;
+    }
+    .highlight-item::before { content: '✔'; color: var(--green); font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+
+    /* ─── CONTEÚDO ─────────────────────────────── */
+    .content-section { background: var(--bg2); }
+    .content-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .content-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.4rem;
+      display: flex; gap: .9rem; align-items: flex-start;
+      transition: border-color .2s, transform .2s;
+    }
+    .content-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .content-emoji { font-size: 1.4rem; flex-shrink: 0; margin-top: .1rem; }
+    .content-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: .3rem; }
+    .content-card p { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+
+    /* ─── CTA FINAL ─────────────────────────────── */
+    .cta-final {
+      background: linear-gradient(135deg, rgba(0,217,126,.08), rgba(245,200,66,.06));
+      border-top: 1px solid var(--border);
+      text-align: center; padding: 100px 5%;
+    }
+    .cta-final h2 {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900; letter-spacing: -2px;
+      margin-bottom: 1.2rem; line-height: 1.15;
+    }
+    .cta-final p { font-size: 1.05rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; line-height: 1.75; }
+    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ─── FOOTER ────────────────────────────────── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 2.5rem 5%; text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: .5rem;
+    }
+    footer p { font-size: .82rem; color: var(--muted); }
+
+    /* ─── PILARES DESTAQUE ──────────────────────── */
+    .pilares { background: var(--bg); }
+    .pilares-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .pilar-card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 2.2rem 2rem;
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .pilar-card:hover {
+      transform: translateY(-5px);
+    }
+    .pilar-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .pilar-bpo { border-color: rgba(245,200,66,.4); }
+    .pilar-bpo::before { background: linear-gradient(90deg, var(--gold), var(--gold2)); }
+    .pilar-bpo:hover { box-shadow: 0 0 40px rgba(245,200,66,.15); }
+    .pilar-fiscal { border-color: rgba(0,217,126,.35); }
+    .pilar-fiscal::before { background: linear-gradient(90deg, var(--green), var(--green2)); }
+    .pilar-fiscal:hover { box-shadow: 0 0 40px rgba(0,217,126,.15); }
+    .pilar-sistema { border-color: rgba(59,130,246,.35); }
+    .pilar-sistema::before { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+    .pilar-sistema:hover { box-shadow: 0 0 40px rgba(59,130,246,.15); }
+    .pilar-mentoria { border-color: rgba(245,200,66,.25); }
+    .pilar-mentoria::before { background: linear-gradient(90deg, #f472b6, #a855f7); }
+    .pilar-mentoria:hover { box-shadow: 0 0 40px rgba(244,114,182,.12); }
+
+    .pilar-head {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+    .pilar-icon-wrap {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .pilar-bpo .pilar-icon-wrap { background: rgba(245,200,66,.12); }
+    .pilar-fiscal .pilar-icon-wrap { background: rgba(0,217,126,.12); }
+    .pilar-sistema .pilar-icon-wrap { background: rgba(59,130,246,.12); }
+    .pilar-mentoria .pilar-icon-wrap { background: rgba(244,114,182,.12); }
+
+    .pilar-label {
+      font-size: .7rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: .2rem;
+    }
+    .pilar-bpo .pilar-label { color: var(--gold); }
+    .pilar-fiscal .pilar-label { color: var(--green); }
+    .pilar-sistema .pilar-label { color: #60a5fa; }
+    .pilar-mentoria .pilar-label { color: #f472b6; }
+    .pilar-title { font-size: 1.2rem; font-weight: 800; letter-spacing: -.3px; line-height: 1.2; }
+    .pilar-desc { font-size: .9rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.4rem; }
+    .pilar-items { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+    .pilar-items li {
+      display: flex; gap: .6rem; font-size: .83rem; align-items: flex-start;
+    }
+    .pilar-items li span.dot {
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: .45rem;
+    }
+    .pilar-bpo .dot { background: var(--gold); }
+    .pilar-fiscal .dot { background: var(--green); }
+    .pilar-sistema .dot { background: #60a5fa; }
+    .pilar-mentoria .dot { background: #f472b6; }
+
+    /* BPO card no grid de produtos — glow dourado */
+    .product-card.bpo-gold {
+      border-color: rgba(245,200,66,.45);
+      box-shadow: 0 0 0 1px rgba(245,200,66,.2), 0 0 40px rgba(245,200,66,.08);
+    }
+    .product-card.bpo-gold .product-badge-top {
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      color: #000;
+    }
+
+    /* ─── DIVIDER ────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .method-grid { grid-template-columns: repeat(2, 1fr); }
+      .pilares-grid { grid-template-columns: 1fr; }
+      .app-inner { grid-template-columns: 1fr; }
+      .app-mockup { display: none; }
+    }
+    @media (max-width: 600px) {
+      nav .nav-links { display: none; }
+      .method-grid { grid-template-columns: repeat(2, 1fr); }
+      .pilares-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav>
+  <div class="nav-logo">GroomerPet360</div>
+  <div class="nav-links">
+    <a href="#metodo">Método</a>
+    <a href="#servicos">Serviços</a>
+    <a href="#produtos">Planos</a>
+    <a href="#app">Sistema</a>
+    <a href="#time">Time</a>
+  </div>
+  <a href="#produtos" class="nav-cta">Quero começar</a>
+</nav>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">🐾 Método Exclusivo para Pet Shop</div>
+      <h1>Da ideia ao<br/><em>pet shop lucrativo.</em></h1>
+      <p class="hero-sub">
+        Quer abrir um pet shop do jeito certo — ou já tem um e precisa fazer o lucro aparecer de verdade?
+        A gente tem o caminho para os dois momentos.
+      </p>
+      <div class="hero-btns">
+        <a href="#publico" class="btn-primary">🚀 Qual é o meu perfil?</a>
+        <a href="#metodo" class="btn-ghost">Conhecer o método</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num">R$0</div>
+          <div class="stat-label">Para começar a aprender</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3x</div>
+          <div class="stat-label">Faturamento médio após método</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Pilares do Método PET-LUCRO</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Baseado em operação real</div>
+        </div>
+      </div>
+      <div class="metric-row">
+        <div>
+          <div class="metric-label">Controle financeiro</div>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:88%"></div></div>
+        </div>
+        <div class="metric-val">88%</div>
+      </div>
+      <div class="metric-row">
+        <div>
+          <div class="metric-label">Atração de clientes</div>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:74%"></div></div>
+        </div>
+        <div class="metric-val">74%</div>
+      </div>
+      <div class="metric-row">
+        <div>
+          <div class="metric-label">Lucratividade</div>
+          <div class="metric-bar-wrap"><div class="metric-bar" style="width:91%"></div></div>
+        </div>
+        <div class="metric-val">91%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PÚBLICO ══════════════ -->
+<section class="publico" id="publico" style="padding:80px 5%">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-tag">Qual é o seu momento?</div>
+      <h2 class="section-title">Temos o caminho certo<br/>para cada perfil</h2>
+      <p class="section-sub">Seja você um empreendedor que quer entrar no mercado pet ou um dono de pet shop que quer finalmente ter lucro — a GroomerPet360 foi feita para os dois.</p>
+    </div>
+    <div class="publico-grid">
+
+      <!-- QUER ABRIR -->
+      <div class="pub-card pub-abrir">
+        <div class="pub-eyebrow">🌱 Perfil 1</div>
+        <h3>Quero abrir<br/>meu pet shop</h3>
+        <p>Você vê o mercado pet crescendo, sente que é uma boa oportunidade — mas não sabe por onde começar sem correr o risco de perder tudo que investiu.</p>
+        <ul class="pub-dores">
+          <li><span class="di">😟</span> Não sei quanto preciso para começar</li>
+          <li><span class="di">📍</span> Não sei como escolher o ponto certo</li>
+          <li><span class="di">🤷</span> Não sei quais serviços oferecer primeiro</li>
+          <li><span class="di">📉</span> Medo de investir e não ter retorno</li>
+          <li><span class="di">📄</span> Não entendo a parte fiscal e jurídica</li>
+        </ul>
+        <a href="#servicos" class="pub-link">Ver como te ajudamos →</a>
+      </div>
+
+      <!-- JÁ TEM -->
+      <div class="pub-card pub-tem">
+        <div class="pub-eyebrow">🏪 Perfil 2</div>
+        <h3>Já tenho um<br/>pet shop</h3>
+        <p>O movimento existe, os clientes aparecem — mas o lucro some. Você trabalha cada vez mais e o caixa continua apertado. Isso tem solução.</p>
+        <ul class="pub-dores">
+          <li><span class="di">💸</span> O dinheiro entra, mas nunca sobra</li>
+          <li><span class="di">📊</span> Não sei precificar banho, tosa e produtos</li>
+          <li><span class="di">📦</span> Estoque descontrolado e custos escondidos</li>
+          <li><span class="di">🔄</span> Tudo depende de mim, não consigo crescer</li>
+          <li><span class="di">📈</span> Concorrente crescendo e eu parado</li>
+        </ul>
+        <a href="#servicos" class="pub-link">Ver como te ajudamos →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DORES ══════════════ -->
+<section class="pain">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">Você se identifica?</div>
+      <h2 class="section-title">Os problemas que travam<br/>donos de pet shop</h2>
+      <p class="section-sub">Seja abrindo ou gerenciando — 99% dos pequenos empresários nunca aprenderam gestão. E sem gestão, não existe lucro.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="pain-icon">💸</div>
+        <h3>O caixa vive apertado</h3>
+        <p>O movimento é bom, os clientes aparecem — mas no final do mês não sobra nada. Isso tem solução, e tem nome: gestão financeira.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📊</div>
+        <h3>Não sabe precificar</h3>
+        <p>Cobrar no "feeling" é receita de prejuízo. Sem saber seu custo real, qualquer preço que você coloca pode estar te quebrando.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">😰</div>
+        <h3>Não sabe por onde começar</h3>
+        <p>Quer abrir um pet shop mas está perdido: qual ponto escolher, quanto investir, quais serviços oferecer?</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">📉</div>
+        <h3>Concorrente crescendo, você não</h3>
+        <p>Você trabalha igual ou mais do que antes — mas o concorrente cresce e você fica estagnado. A diferença é método.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🔄</div>
+        <h3>Sem processos, sem escala</h3>
+        <p>Tudo depende de você. Se você sai, o negócio para. Isso não é empresa, é emprego disfarçado.</p>
+      </div>
+      <div class="pain-card">
+        <div class="pain-icon">🗂️</div>
+        <h3>Falta de organização financeira</h3>
+        <p>Sem DRE, sem fluxo de caixa, sem controle de estoque. Você está dirigindo no escuro — e isso é perigoso.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ POR QUÊ ══════════════ -->
+<section class="why" id="metodo">
+  <div class="section-inner">
+    <div class="why-inner">
+      <div class="section-tag" style="display:inline-block">Nossa solução</div>
+      <h2 class="section-title" style="margin-top:.5rem">A verdade que ninguém conta<br/>sobre o mercado pet</h2>
+      <p class="why-text">
+        O mercado pet no Brasil <strong>cresce absurdamente</strong>.<br/>
+        E quase ninguém ensina gestão para esse setor.<br/>
+        A maioria das consultorias <strong>não tem operação real de negócio</strong>.<br/>
+        <strong>Nós temos.</strong>
+      </p>
+      <div class="highlight-list">
+        <div class="highlight-item">Abrir o negócio do jeito certo, evitando erros caros</div>
+        <div class="highlight-item">Organizar o financeiro com clareza e controle</div>
+        <div class="highlight-item">Atrair mais clientes com estratégia, não achismo</div>
+        <div class="highlight-item">Transformar esforço em lucro de verdade</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ MÉTODO ══════════════ -->
+<section style="background:var(--bg2); padding:90px 5%">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-tag">Framework exclusivo</div>
+      <h2 class="section-title">Método <span style="background:linear-gradient(90deg,var(--green),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PET-LUCRO</span></h2>
+      <p class="section-sub">Oito pilares que transformam um pet shop caótico em um negócio lucrativo e previsível.</p>
+    </div>
+    <div class="method-grid">
+      <div class="method-card">
+        <div class="method-letter">P</div>
+        <div class="method-word">Planejamento</div>
+        <div class="method-desc">Estrutura do negócio antes de abrir as portas</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">E</div>
+        <div class="method-word">Estrutura</div>
+        <div class="method-desc">Layout, fornecedores, serviços e processos</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">T</div>
+        <div class="method-word">Tráfego</div>
+        <div class="method-desc">Estratégias para atrair clientes locais</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">L</div>
+        <div class="method-word">Lucro</div>
+        <div class="method-desc">Precificação correta e margens saudáveis</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">U</div>
+        <div class="method-word">Unidade Econômica</div>
+        <div class="method-desc">Ponto de equilíbrio e viabilidade real</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">C</div>
+        <div class="method-word">Controle Financeiro</div>
+        <div class="method-desc">DRE, fluxo de caixa e indicadores</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">R</div>
+        <div class="method-word">Retenção</div>
+        <div class="method-desc">Fidelização de clientes e recorrência</div>
+      </div>
+      <div class="method-card">
+        <div class="method-letter">O</div>
+        <div class="method-word">Operação Eficiente</div>
+        <div class="method-desc">Processos que funcionam sem depender de você</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PILARES ══════════════ -->
+<section class="pilares" id="servicos" style="padding:90px 5%">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-tag">O que oferecemos</div>
+      <h2 class="section-title">4 serviços que transformam<br/>o seu pet shop</h2>
+      <p class="section-sub">Cada pilar foi construído por um especialista real — com experiência de quem vive o mercado pet todos os dias.</p>
+    </div>
+    <div class="pilares-grid">
+
+      <!-- BPO -->
+      <div class="pilar-card pilar-bpo">
+        <div class="pilar-head">
+          <div class="pilar-icon-wrap">🏆</div>
+          <div>
+            <div class="pilar-label">Gestão Terceirizada</div>
+            <div class="pilar-title">BPO Financeiro<br/>& Operacional</div>
+          </div>
+        </div>
+        <p class="pilar-desc">O time GroomerPet360 assume a gestão do seu negócio. Você foca no atendimento, a gente cuida dos números, processos e crescimento.</p>
+        <ul class="pilar-items">
+          <li><span class="dot"></span>BPO financeiro mensal completo</li>
+          <li><span class="dot"></span>Indicadores e dashboards personalizados</li>
+          <li><span class="dot"></span>Reunião mensal de resultados e metas</li>
+          <li><span class="dot"></span>Planejamento estratégico de crescimento</li>
+          <li><span class="dot"></span>Suporte prioritário de todo o time</li>
+        </ul>
+      </div>
+
+      <!-- FISCAL -->
+      <div class="pilar-card pilar-fiscal">
+        <div class="pilar-head">
+          <div class="pilar-icon-wrap">📋</div>
+          <div>
+            <div class="pilar-label">Área Contábil & Fiscal</div>
+            <div class="pilar-title">Estrutura Fiscal<br/>& Tributária</div>
+          </div>
+        </div>
+        <p class="pilar-desc">Abrir ou manter um pet shop sem estrutura fiscal correta é perder dinheiro todo mês. Nossa área contábil garante que você pague só o necessário.</p>
+        <ul class="pilar-items">
+          <li><span class="dot"></span>Escolha do regime tributário ideal</li>
+          <li><span class="dot"></span>DRE mensal para pet shop</li>
+          <li><span class="dot"></span>Estrutura societária e abertura de empresa</li>
+          <li><span class="dot"></span>Precificação com base em custo real</li>
+          <li><span class="dot"></span>Planejamento financeiro anual</li>
+        </ul>
+      </div>
+
+      <!-- SISTEMA -->
+      <div class="pilar-card pilar-sistema">
+        <div class="pilar-head">
+          <div class="pilar-icon-wrap">💻</div>
+          <div>
+            <div class="pilar-label">Tecnologia Própria</div>
+            <div class="pilar-title">Sistema de Gestão<br/>para Pet Shop</div>
+          </div>
+        </div>
+        <p class="pilar-desc">Desenvolvemos nosso próprio sistema para controlar a operação de banho e tosa — e agora você também pode usar. Agenda, financeiro e dashboard em um só lugar.</p>
+        <ul class="pilar-items">
+          <li><span class="dot"></span>Agenda inteligente de atendimentos</li>
+          <li><span class="dot"></span>Ficha completa de cada pet</li>
+          <li><span class="dot"></span>Controle financeiro integrado</li>
+          <li><span class="dot"></span>Relatórios automáticos diários</li>
+          <li><span class="dot"></span>Dashboard em tempo real</li>
+        </ul>
+      </div>
+
+      <!-- MENTORIA -->
+      <div class="pilar-card pilar-mentoria">
+        <div class="pilar-head">
+          <div class="pilar-icon-wrap">🎯</div>
+          <div>
+            <div class="pilar-label">Mentoria Individual</div>
+            <div class="pilar-title">Mentoria Personalizada<br/>para Donos de Pet</div>
+          </div>
+        </div>
+        <p class="pilar-desc">Sessões individuais com nossos especialistas para resolver os gargalos específicos do seu negócio — sem teoria genérica, direto ao ponto.</p>
+        <ul class="pilar-items">
+          <li><span class="dot"></span>Diagnóstico completo do negócio</li>
+          <li><span class="dot"></span>Plano de ação personalizado</li>
+          <li><span class="dot"></span>Sessões 1:1 com o especialista certo</li>
+          <li><span class="dot"></span>Acompanhamento dos resultados</li>
+          <li><span class="dot"></span>Acesso ao método PET-LUCRO completo</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ PRODUTOS ══════════════ -->
+<section id="produtos" style="padding:90px 5%; background:var(--bg2)">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-tag">Escolha seu caminho</div>
+      <h2 class="section-title">Três formas de transformar<br/>seu pet shop</h2>
+      <p class="section-sub">Do conhecimento fundamental à gestão completa — escolha o nível que você precisa agora.</p>
+    </div>
+    <div class="products-grid">
+
+      <!-- Curso -->
+      <div class="product-card">
+        <div class="product-icon">🎓</div>
+        <h3>Curso Completo</h3>
+        <p class="product-desc">Aprenda do zero como abrir, estruturar e tornar um pet shop lucrativo. 5 módulos completos.</p>
+        <div class="product-price">R$ 497 <span>a R$ 1.497</span></div>
+        <div class="product-divider"></div>
+        <ul class="product-list">
+          <li>Módulo 1 — Viabilidade e investimento inicial</li>
+          <li>Módulo 2 — Estrutura, layout e fornecedores</li>
+          <li>Módulo 3 — Financeiro e precificação</li>
+          <li>Módulo 4 — Marketing e primeiros clientes</li>
+          <li>Módulo 5 — Gestão e crescimento</li>
+          <li>Acesso vitalício + atualizações</li>
+        </ul>
+        <a href="#cta" class="product-cta ghost">Quero o curso</a>
+      </div>
+
+      <!-- Comunidade -->
+      <div class="product-card featured">
+        <div class="product-badge-top">⭐ Mais popular</div>
+        <div class="product-icon">🤝</div>
+        <h3>Clube do Dono de Pet Shop</h3>
+        <p class="product-desc">Comunidade exclusiva com materiais prontos, suporte e conteúdo novo todo mês.</p>
+        <div class="product-price">R$ 79 <span>– R$ 199/mês</span></div>
+        <div class="product-divider"></div>
+        <ul class="product-list">
+          <li>Planilha de fluxo de caixa pronta</li>
+          <li>Cálculo de preço de banho e tosa</li>
+          <li>Controle de estoque e agenda</li>
+          <li>DRE simplificado para pet shop</li>
+          <li>Aula ao vivo mensal com o time</li>
+          <li>Grupo fechado com suporte</li>
+          <li>Dashboards e relatórios prontos</li>
+        </ul>
+        <a href="#cta" class="product-cta">Entrar na comunidade</a>
+      </div>
+
+      <!-- BPO -->
+      <div class="product-card bpo-gold">
+        <div class="product-badge-top">💰 Maior resultado</div>
+        <div class="product-icon">🏆</div>
+        <h3>BPO + Consultoria Premium</h3>
+        <p class="product-desc">Gestão completa para quem quer crescer de verdade — o time GroomerPet360 dentro do seu negócio.</p>
+        <div class="product-price">R$ 800 <span>– R$ 3.000/mês</span></div>
+        <div class="product-divider"></div>
+        <ul class="product-list">
+          <li>BPO financeiro mensal completo</li>
+          <li>Organização e mapeamento de processos</li>
+          <li>Dashboard de indicadores personalizado</li>
+          <li>Reunião mensal de resultados</li>
+          <li>Planejamento de crescimento</li>
+          <li>Suporte prioritário do time inteiro</li>
+        </ul>
+        <a href="#cta" class="product-cta gold">Quero a gestão completa</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ APLICATIVO ══════════════ -->
+<section class="app" id="app">
+  <div class="section-inner">
+    <div class="app-inner">
+      <div>
+        <div class="section-tag">Tecnologia própria</div>
+        <h2 class="section-title">Aplicativo de Controle<br/>de Banho e Tosa</h2>
+        <p class="section-sub">Desenvolvido por nós, para nós — e agora disponível para você. Controle total da sua operação de banho e tosa em tempo real.</p>
+        <div class="app-features">
+          <div class="app-feat">
+            <div class="app-feat-icon">📅</div>
+            <div class="app-feat-text">
+              <h4>Agenda inteligente</h4>
+              <p>Gerencie horários, evite conflitos e acompanhe todos os atendimentos do dia.</p>
+            </div>
+          </div>
+          <div class="app-feat">
+            <div class="app-feat-icon">🐕</div>
+            <div class="app-feat-text">
+              <h4>Ficha completa do pet</h4>
+              <p>Histórico de atendimentos, observações e preferências de cada animal.</p>
+            </div>
+          </div>
+          <div class="app-feat">
+            <div class="app-feat-icon">💰</div>
+            <div class="app-feat-text">
+              <h4>Controle financeiro integrado</h4>
+              <p>Faturamento por serviço, ticket médio e relatórios automáticos do dia.</p>
+            </div>
+          </div>
+          <div class="app-feat">
+            <div class="app-feat-icon">📊</div>
+            <div class="app-feat-text">
+              <h4>Dashboard em tempo real</h4>
+              <p>Visualize o desempenho da sua operação com indicadores atualizados ao instante.</p>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem">
+          <a href="#cta" class="btn-primary" style="display:inline-flex">📱 Testar o aplicativo</a>
+        </div>
+      </div>
+
+      <!-- Mock -->
+      <div class="app-mockup">
+        <div class="mock-topbar">
+          <div class="mock-title">Agenda de Hoje</div>
+          <div class="mock-badge">🟢 Aberto</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-left">
+            <div class="mock-dot" style="background:var(--green)"></div>
+            <div>
+              <div class="mock-pet">Thor — Golden</div>
+              <div class="mock-time">08:00 · Banho + Tosa</div>
+            </div>
+          </div>
+          <div class="mock-status status-done">Concluído</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-left">
+            <div class="mock-dot" style="background:var(--accent)"></div>
+            <div>
+              <div class="mock-pet">Luna — Poodle</div>
+              <div class="mock-time">10:00 · Banho</div>
+            </div>
+          </div>
+          <div class="mock-status status-prog">Em andamento</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-left">
+            <div class="mock-dot" style="background:var(--gold)"></div>
+            <div>
+              <div class="mock-pet">Max — Shih Tzu</div>
+              <div class="mock-time">13:30 · Tosa</div>
+            </div>
+          </div>
+          <div class="mock-status status-wait">Aguardando</div>
+        </div>
+        <div class="mock-row">
+          <div class="mock-row-left">
+            <div class="mock-dot" style="background:var(--gold)"></div>
+            <div>
+              <div class="mock-pet">Mel — Maltês</div>
+              <div class="mock-time">15:00 · Banho + Tosa</div>
+            </div>
+          </div>
+          <div class="mock-status status-wait">Aguardando</div>
+        </div>
+        <div class="mock-divider"></div>
+        <div class="mock-stats">
+          <div class="mock-stat">
+            <div class="mock-stat-num">R$480</div>
+            <div class="mock-stat-lbl">Faturado hoje</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-num">4</div>
+            <div class="mock-stat-lbl">Atendimentos</div>
+          </div>
+          <div class="mock-stat">
+            <div class="mock-stat-num">R$120</div>
+            <div class="mock-stat-lbl">Ticket médio</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ TIME ══════════════ -->
+<section id="time" style="background:var(--bg); padding:90px 5%">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-tag">Quem está por trás</div>
+      <h2 class="section-title">Um time complementar,<br/>com operação real</h2>
+      <p class="section-sub">A maioria das consultorias ensina teoria. Nós ensinamos o que aplicamos todos os dias no nosso próprio pet shop.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">📋</div>
+        <div class="team-role">Contador</div>
+        <h3>Fiscal & Tributário</h3>
+        <p>Responsável pela estrutura fiscal, custos, DRE e planejamento tributário do negócio.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🏦</div>
+        <div class="team-role">Bancário</div>
+        <h3>Financeiro & Crédito</h3>
+        <p>Gestão de caixa, capital de giro, crédito e indicadores financeiros para o seu pet.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">💻</div>
+        <div class="team-role">Programador</div>
+        <h3>Tech & Automação</h3>
+        <p>Dashboards, automações, sistemas e o aplicativo de banho e tosa desenvolvido por nós.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🗂️</div>
+        <div class="team-role">Gerente de Projetos</div>
+        <h3>Método & Execução</h3>
+        <p>Organização do cliente, implementação do método, cronograma e acompanhamento.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;padding:1.5rem;background:var(--card);border-radius:14px;border:1px solid var(--border);max-width:680px;margin-left:auto;margin-right:auto">
+      <p style="font-size:.95rem;color:var(--muted);line-height:1.8">
+        🐾 <strong style="color:var(--text)">Nosso diferencial mais poderoso:</strong> temos um pet shop real.
+        Mostramos faturamento, processos, números e bastidores.
+        <strong style="color:var(--green)">Isso gera autoridade que nenhuma consultoria de teoria tem.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CONTEÚDO ══════════════ -->
+<section class="content-section">
+  <div class="section-inner">
+    <div class="section-header center">
+      <div class="section-tag">Conteúdo gratuito</div>
+      <h2 class="section-title">Assuntos que a gente domina<br/>e compartilha todo dia</h2>
+    </div>
+    <div class="content-grid">
+      <div class="content-card">
+        <div class="content-emoji">💡</div>
+        <div>
+          <h4>Quanto custa abrir um pet shop</h4>
+          <p>Investimento real, detalhado, sem supresas.</p>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-emoji">📈</div>
+        <div>
+          <h4>Quanto um pet shop fatura</h4>
+          <p>Expectativas reais baseadas em operação.</p>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-emoji">⚠️</div>
+        <div>
+          <h4>Erros que quebram pet shops</h4>
+          <p>O que ninguém te conta antes de abrir.</p>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-emoji">✂️</div>
+        <div>
+          <h4>Quanto cobrar no banho e tosa</h4>
+          <p>Precificação correta que garante margem.</p>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-emoji">🔍</div>
+        <div>
+          <h4>Por que seu pet shop não dá lucro</h4>
+          <p>As causas reais e como resolver cada uma.</p>
+        </div>
+      </div>
+      <div class="content-card">
+        <div class="content-emoji">🎯</div>
+        <div>
+          <h4>Como conseguir os primeiros clientes</h4>
+          <p>Instagram local, Google e marketing de baixo custo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ CTA FINAL ══════════════ -->
+<section class="cta-final" id="cta">
+  <div class="section-inner">
+    <div style="max-width:700px;margin:0 auto">
+      <div class="section-tag" style="display:inline-block;margin-bottom:1.5rem">Comece agora</div>
+      <h2 class="section-title">Você pode virar referência<br/>no mercado pet.</h2>
+      <p style="font-size:1.05rem;color:var(--muted);margin-bottom:2.5rem;line-height:1.75">
+        O mercado pet no Brasil cresce absurdamente — e quase ninguém ensina gestão para esse setor.
+        Esse é o momento de sair na frente.
+      </p>
+      <div class="cta-btns">
+        <a href="https://wa.me/5548991593331" class="btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem">
+          💬 Falar com o time no WhatsApp
+        </a>
+        <a href="#produtos" class="btn-ghost" style="font-size:1.05rem;padding:1rem 2rem">
+          Ver todos os planos
+        </a>
+      </div>
+      <p style="font-size:.8rem;color:var(--muted);margin-top:1.5rem">
+        Sem compromisso. Resposta em até 24 horas.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-logo">GroomerPet360</div>
+  <p style="margin-top:.3rem">© 2025 GroomerPet360 · Todos os direitos reservados</p>
+  <p style="margin-top:.3rem">Da ideia ao pet shop lucrativo.</p>
+</footer>
+
+</body>
+</html>
